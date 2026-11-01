@@ -1,0 +1,411 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080b0a">
+<title>YOUR_USERNAME | Personal Website</title>
+<meta name="description" content="The personal website of YOUR_USERNAME.">
+<style>
+:root {
+  --bg: #080b0a;
+  --panel: #101713;
+  --text: #d8e8dc;
+  --muted: #82958a;
+  --green: #39ff88;
+  --border: #1d3828;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Courier New", monospace;
+  overflow-x: hidden;
+  transition: background .3s, color .3s;
+}
+body.light {
+  --bg: #eaf5ed;
+  --panel: #ffffff;
+  --text: #14271a;
+  --muted: #536b59;
+  --green: #087d3d;
+  --border: #b6d8c0;
+}
+#matrix {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  opacity: .13;
+  pointer-events: none;
+}
+.container {
+  width: min(900px, 90%);
+  margin: auto;
+}
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 25px 0;
+  border-bottom: 1px solid var(--border);
+}
+.logo {
+  color: var(--green);
+  font-weight: bold;
+  font-size: 18px;
+}
+nav { display: flex; gap: 20px; }
+nav a, a {
+  color: var(--green);
+  text-decoration: none;
+}
+nav a:hover, a:hover { text-shadow: 0 0 10px var(--green); }
+.theme {
+  background: var(--panel);
+  color: var(--green);
+  border: 1px solid var(--border);
+  padding: 8px 12px;
+  cursor: pointer;
+  font-family: inherit;
+}
+.hero {
+  padding: 110px 0 85px;
+  min-height: 430px;
+}
+.terminal-label {
+  color: var(--green);
+  font-size: 13px;
+}
+h1 {
+  font-size: clamp(35px, 8vw, 65px);
+  margin: 18px 0;
+  letter-spacing: -3px;
+}
+h1 span { color: var(--green); }
+.subtitle {
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.8;
+}
+.cursor {
+  display: inline-block;
+  width: 9px;
+  height: 20px;
+  background: var(--green);
+  animation: blink 1s steps(2) infinite;
+  vertical-align: middle;
+}
+@keyframes blink { 50% { opacity: 0; } }
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+}
+.btn {
+  padding: 12px 18px;
+  border: 1px solid var(--green);
+  color: var(--green);
+  transition: .2s;
+}
+.btn.primary {
+  background: var(--green);
+  color: #06100a;
+}
+.btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 18px #39ff8840;
+}
+section { padding: 35px 0; }
+.section-title {
+  color: var(--green);
+  font-size: 19px;
+  margin-bottom: 20px;
+}
+.section-title::before { content: "> "; }
+.card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  padding: 24px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  transition: .25s;
+}
+.card:hover {
+  border-color: var(--green);
+  transform: translateY(-3px);
+  box-shadow: 0 0 20px #39ff8810;
+}
+.card p {
+  color: var(--muted);
+  line-height: 1.8;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 15px;
+}
+.tag {
+  display: inline-block;
+  padding: 8px 12px;
+  margin: 5px;
+  border: 1px solid var(--border);
+  color: var(--green);
+  background: var(--panel);
+}
+.socials {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.socials a {
+  padding: 13px 18px;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  border-radius: 5px;
+}
+.socials a:hover {
+  border-color: var(--green);
+  transform: translateY(-2px);
+}
+footer {
+  margin-top: 50px;
+  padding: 25px 0;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  color: var(--muted);
+  font-size: 12px;
+}
+.status { color: var(--green); }
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity .7s, transform .7s;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+@media(max-width:600px) {
+  header { flex-wrap: wrap; gap: 15px; }
+  nav { order: 3; width: 100%; gap: 15px; }
+  nav a { font-size: 12px; }
+  .hero { padding: 75px 0; }
+}
+@media(prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    scroll-behavior: auto !important;
+    transition-duration: .01ms !important;
+  }
+}
+</style>
+</head>
+<body>
+
+<canvas id="matrix"></canvas>
+
+<div class="container">
+<header>
+  <div class="logo">./YOUR_USERNAME</div>
+  <nav>
+    <a href="#about">about</a>
+    <a href="#interests">interests</a>
+    <a href="#socials">socials</a>
+  </nav>
+  <button class="theme" id="themeBtn">☀ Theme</button>
+</header>
+
+<main>
+  <div class="hero">
+    <div class="terminal-label">
+      [ SYSTEM ONLINE ] <span class="status">●</span>
+    </div>
+
+    <h1>Hey, I'm <span>YOUR_USERNAME</span><span class="cursor"></span></h1>
+
+    <p class="subtitle">
+      <span id="typing"></span>
+    </p>
+
+    <div class="buttons">
+      <a class="btn primary" href="#about">Explore →</a>
+      <a class="btn" href="#socials">Find me online</a>
+    </div>
+  </div>
+
+  <section id="about" class="reveal">
+    <div class="section-title">About Me</div>
+    <div class="card">
+      <h3>whoami</h3>
+      <p>
+        Hello! I'm YOUR_USERNAME. Welcome to my little corner
+        of the internet.
+        <br><br>
+        I'm someone who enjoys technology, exploring new things,
+        gaming, and learning something new every day.
+        <br><br>
+        This website is my personal space. Feel free to explore!
+      </p>
+    </div>
+  </section>
+
+  <section id="interests" class="reveal">
+    <div class="section-title">My Interests</div>
+    <div class="grid">
+      <div class="card">
+        <h3>🎮 Gaming</h3>
+        <p>Games, adventures and having fun.</p>
+      </div>
+      <div class="card">
+        <h3>💻 Technology</h3>
+        <p>Computers, software and the internet.</p>
+      </div>
+      <div class="card">
+        <h3>🎵 Music</h3>
+        <p>Discovering new sounds and artists.</p>
+      </div>
+      <div class="card">
+        <h3>🌐 Internet</h3>
+        <p>Exploring websites and digital worlds.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <div class="section-title">Current status</div>
+    <div class="card">
+      <p><span class="status">●</span> Status: Online</p>
+      <p>Currently: Learning and exploring.</p>
+      <p>Location: Internet</p>
+      <p>Mission: Make cool things.</p>
+    </div>
+  </section>
+
+  <section id="socials" class="reveal">
+    <div class="section-title">Find Me Online</div>
+    <div class="socials">
+      <!-- Replace these example links with your own -->
+      <a href="https://github.com/" target="_blank"
+         rel="noopener noreferrer">GitHub ↗</a>
+      <a href="https://discord.com/" target="_blank"
+         rel="noopener noreferrer">Discord ↗</a>
+      <a href="https://youtube.com/" target="_blank"
+         rel="noopener noreferrer">YouTube ↗</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>© <span id="year"></span> YOUR_USERNAME</p>
+  <p>Made with <span class="status">♥</span> and a little bit of code.</p>
+  <p> <span class="status">[ ALL SYSTEMS NORMAL ]</span> </p>
+</footer>
+</div>
+
+<script>
+// Typing animation
+const messages = [
+  "Welcome to my website.",
+  "Just another person on the internet.",
+  "Exploring. Creating. Learning.",
+];
+
+const typing = document.getElementById("typing");
+let messageIndex = 0;
+let charIndex = 0;
+let deleting = false;
+
+function typeEffect() {
+  const message = messages[messageIndex];
+
+  typing.textContent = message.substring(0, charIndex);
+
+  if (!deleting) {
+    charIndex++;
+    if (charIndex > message.length) {
+      deleting = true;
+      setTimeout(typeEffect, 1300);
+      return;
+    }
+  } else {
+    charIndex--;
+    if (charIndex < 0) {
+      charIndex = 0;
+      deleting = false;
+      messageIndex = (messageIndex + 1) % messages.length;
+    }
+  }
+
+  setTimeout(typeEffect, deleting ? 35 : 75);
+}
+typeEffect();
+
+// Reveal elements on scroll
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add("visible");
+    }
+  });
+}, { threshold: 0.12 });
+
+document.querySelectorAll(".reveal").forEach(el => observer.observe(el));
+
+// Light/dark theme
+const themeBtn = document.getElementById("themeBtn");
+themeBtn.addEventListener("click", () => {
+  document.body.classList.toggle("light");
+  themeBtn.textContent =
+    document.body.classList.contains("light")
+      ? "☾ Dark" : "☀ Theme";
+});
+
+// Current year
+document.getElementById("year").textContent =
+  new Date().getFullYear();
+
+// Matrix-style background
+const canvas = document.getElementById("matrix");
+const ctx = canvas.getContext("2d");
+const chars = "01アイウエオカキクケコ";
+const fontSize = 14;
+let drops = [];
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  drops = Array(Math.ceil(canvas.width / fontSize)).fill(1);
+}
+resizeCanvas();
+window.addEventListener("resize", resizeCanvas);
+
+function drawMatrix() {
+  ctx.fillStyle = "rgba(8, 11, 10, 0.08)";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = "#39ff88";
+  ctx.font = fontSize + "px monospace";
+
+  drops.forEach((y, i) => {
+    const char = chars[Math.floor(Math.random() * chars.length)];
+    ctx.fillText(char, i * fontSize, y * fontSize);
+
+    if (y * fontSize > canvas.height && Math.random() > 0.975) {
+      drops[i] = 0;
+    }
+    drops[i]++;
+  });
+}
+const reduceMotion = window.matchMedia(
+  "(prefers-reduced-motion: reduce)"
+).matches;
+
+if (!reduceMotion) {
+  setInterval(drawMatrix, 65);
+}
+</script>
+</body>
+</html>
